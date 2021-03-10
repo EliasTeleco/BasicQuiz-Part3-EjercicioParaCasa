@@ -16,6 +16,10 @@ public class CheatActivity extends AppCompatActivity {
   public final static String EXTRA_ANSWER = "EXTRA_ANSWER";
   public final static String EXTRA_CHEATED = "EXTRA_CHEATED";
 
+  public final static String KEY_ANSWER = "KEY_ANSWER";
+  public final static String KEY_CURRENT_ANSWER = "KEY_CURRENT_ANSWER";
+
+
   private Button noButton, yesButton;
   private TextView answerText;
 
@@ -28,6 +32,13 @@ public class CheatActivity extends AppCompatActivity {
     setContentView(R.layout.activity_cheat);
 
     getSupportActionBar().setTitle(R.string.cheat_title);
+
+
+    if (savedInstanceState != null) {
+      currentAnswer= savedInstanceState.getInt(KEY_CURRENT_ANSWER);
+      answerCheated= savedInstanceState.getBoolean(KEY_ANSWER);
+
+    }
 
     initLayoutData();
 
@@ -45,6 +56,8 @@ public class CheatActivity extends AppCompatActivity {
 
     answerText = findViewById(R.id.answerText);
   }
+
+
 
   private void enableLayoutButtons() {
 
@@ -94,6 +107,10 @@ public class CheatActivity extends AppCompatActivity {
   @Override
   protected void onSaveInstanceState(@NonNull Bundle outState) {
     super.onSaveInstanceState(outState);
+    //Pasamos si hemos decidido  usar el cheat
+    outState.putBoolean(KEY_ANSWER, answerCheated);
+    //Pasamos la respuesta de la  pregunta
+    outState.putInt(KEY_CURRENT_ANSWER,  currentAnswer);
 
   }
 
