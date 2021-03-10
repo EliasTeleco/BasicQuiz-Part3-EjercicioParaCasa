@@ -6,6 +6,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class CheatActivity extends AppCompatActivity {
@@ -88,6 +89,12 @@ public class CheatActivity extends AppCompatActivity {
     noButton.setEnabled(false);
 
     returnCheatedStatus();
+  }
+
+  @Override
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+
   }
 
 }
