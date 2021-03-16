@@ -18,13 +18,13 @@ public class CheatActivity extends AppCompatActivity {
 
   public final static String KEY_ANSWER = "KEY_ANSWER";
   public final static String KEY_CURRENT_ANSWER = "KEY_CURRENT_ANSWER";
-
+  public final static String KEY_SELECTED_BUTTON ="KEY_SELECTED_BUTTON";
 
   private Button noButton, yesButton;
   private TextView answerText;
 
   private int currentAnswer;
-  private boolean answerCheated;
+  private boolean answerCheated,trueButtonSelected;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +37,7 @@ public class CheatActivity extends AppCompatActivity {
     if (savedInstanceState != null) {
       currentAnswer= savedInstanceState.getInt(KEY_CURRENT_ANSWER);
       answerCheated= savedInstanceState.getBoolean(KEY_ANSWER);
-
+      trueButtonSelected = savedInstanceState.getBoolean(KEY_SELECTED_BUTTON);
     }
 
     initLayoutData();
@@ -47,14 +47,16 @@ public class CheatActivity extends AppCompatActivity {
   }
 
   private void initLayoutData() {
+
     currentAnswer = getIntent().getExtras().getInt(EXTRA_ANSWER);
+
   }
 
   private void linkLayoutComponents() {
     noButton = findViewById(R.id.noButton);
     yesButton = findViewById(R.id.yesButton);
-
     answerText = findViewById(R.id.answerText);
+
   }
 
 
@@ -63,6 +65,12 @@ public class CheatActivity extends AppCompatActivity {
 
     noButton.setOnClickListener(v -> onNoButtonClicked());
     yesButton.setOnClickListener(v -> onYesButtonClicked());
+    if (trueButtonSelected) {
+      yesButton.setEnabled(false);
+      noButton.setEnabled(false);
+
+      mostrarRespuesta();
+    }
   }
 
   private void returnCheatedStatus() {
@@ -87,14 +95,10 @@ public class CheatActivity extends AppCompatActivity {
   private void onYesButtonClicked() {
     yesButton.setEnabled(false);
     noButton.setEnabled(false);
+    trueButtonSelected= true;
     answerCheated = true;
+    mostrarRespuesta();
 
-    if(currentAnswer == 0) {
-      answerText.setText(R.string.false_text);
-    } else {
-      answerText.setText(R.string.true_text);
-
-    }
   }
 
   private void onNoButtonClicked() {
@@ -111,7 +115,21 @@ public class CheatActivity extends AppCompatActivity {
     outState.putBoolean(KEY_ANSWER, answerCheated);
     //Pasamos la respuesta de la  pregunta
     outState.putInt(KEY_CURRENT_ANSWER,  currentAnswer);
+    //Pasamos si hemos marcado el boton Yes
+    outState.putBoolean(KEY_SELECTED_BUTTON, trueButtonSelected);
 
+
+  }
+
+  //Metodo que muestra la respuesta para evitar repetir tanto codigo.
+  private void mostrarRespuesta() {
+
+    if(currentAnswer == 0) {
+      answerText.setText(R.string.false_text);
+    } else {
+      answerText.setText(R.string.true_text);
+
+    }
   }
 
 }
